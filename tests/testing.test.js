@@ -69,4 +69,11 @@ describe("gameboard factory function", () => {
     expect(gameboard.checkVertically(Ship(2), [0, 6])).toBe(false);
     expect(gameboard.checkVertically(Ship(1), [1, 5])).toBe(false);
   });
+
+  test("attacking ships", () => {
+    let gameboard = Gameboard();
+    gameboard.placeHorizontally(Ship(1), [0, 0]);
+    expect(gameboard.receiveAttack([0, 0])).toBe(true);
+    expect(gameboard.arr[0][0].isSunk()).toBe(true);
+  });
 });

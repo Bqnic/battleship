@@ -1,5 +1,4 @@
-const gridSize = 10;
-
+import { gridSize } from "./constants";
 export function Ship(length, hits = 0) {
   if (length > 5 || length < 1) throw new Error("Invalid size");
 
@@ -24,8 +23,20 @@ export function Gameboard() {
   for (let i = 0; i < gridSize; i++) {
     arr[i] = [];
     for (let j = 0; j < gridSize; j++) {
-      arr[i][j] = i + j;
+      arr[i][j] = null;
     }
+  }
+
+  function receiveAttack(pos) {
+    let xCord = pos[0];
+    let yCord = pos[1];
+
+    if (arr[yCord][xCord]) {
+      let ship = arr[yCord][xCord];
+      ship.hit();
+      return true;
+    }
+    return false;
   }
 
   function placeShipsRandomly() {
@@ -40,8 +51,6 @@ export function Gameboard() {
         if (placeVertically(ship, pos) === false) shipArr.push(ship);
       }
     }
-
-    console.log(arr);
   }
 
   function getRandomPosition() {
@@ -65,7 +74,7 @@ export function Gameboard() {
       let yCord = pos[1];
 
       for (let x = xCord; x < xCord + ship.length; x++) {
-        arr[yCord][x] = "O";
+        arr[yCord][x] = ship;
       }
       return true;
     }
@@ -78,7 +87,7 @@ export function Gameboard() {
       let xCord = pos[0];
       let yCord = pos[1];
 
-      for (let y = yCord; y > yCord - ship.length; y--) arr[y][xCord] = "O";
+      for (let y = yCord; y > yCord - ship.length; y--) arr[y][xCord] = ship;
       return true;
     }
     return false;
@@ -97,36 +106,35 @@ export function Gameboard() {
       return false;
 
     if (yCord !== gridSize - 1) {
-      if (arr[yCord + 1][xCord] === "O") return false;
+      if (arr[yCord + 1][xCord]) return false;
       if (xCord === 0) {
-        if (arr[yCord + 1][xCord + 1] === "O") return false;
+        if (arr[yCord + 1][xCord + 1]) return false;
       } else if (xCord === gridSize - 1) {
-        if (arr[yCord + 1][xCord - 1] === "O") return false;
+        if (arr[yCord + 1][xCord - 1]) return false;
       } else {
-        if (arr[yCord + 1][xCord - 1] === "O") return false;
-        if (arr[yCord + 1][xCord + 1] === "O") return false;
+        if (arr[yCord + 1][xCord - 1]) return false;
+        if (arr[yCord + 1][xCord + 1]) return false;
       }
     }
 
     for (let y = yCord; y > yCord - ship.length; y--) {
-      if (arr[y][xCord] === "O") return false;
+      if (arr[y][xCord]) return false;
       if (xCord === 0) {
-        if (arr[y][xCord + 1] === "O") return false;
+        if (arr[y][xCord + 1]) return false;
       } else if (xCord === gridSize - 1) {
-        if (arr[y][xCord - 1] === "O") return false;
-      } else if (arr[y][xCord - 1] === "O" || arr[y][xCord + 1] === "O")
-        return false;
+        if (arr[y][xCord - 1]) return false;
+      } else if (arr[y][xCord - 1] || arr[y][xCord + 1]) return false;
     }
 
     if (yCord - ship.length + 1 > 0) {
-      if (arr[yCord - ship.length][xCord] === "O") return false;
+      if (arr[yCord - ship.length][xCord]) return false;
       if (xCord === 0) {
-        if (arr[yCord - ship.length][xCord + 1] === "O") return false;
+        if (arr[yCord - ship.length][xCord + 1]) return false;
       } else if (xCord === gridSize - 1) {
-        if (arr[yCord - ship.length][xCord - 1] === "O") return false;
+        if (arr[yCord - ship.length][xCord - 1]) return false;
       } else {
-        if (arr[yCord - ship.length][xCord + 1] === "O") return false;
-        if (arr[yCord - ship.length][xCord - 1] === "O") return false;
+        if (arr[yCord - ship.length][xCord + 1]) return false;
+        if (arr[yCord - ship.length][xCord - 1]) return false;
       }
     }
 
@@ -146,37 +154,36 @@ export function Gameboard() {
       return false;
 
     if (xCord !== 0) {
-      if (arr[yCord][xCord - 1] === "O") return false;
+      if (arr[yCord][xCord - 1]) return false;
       if (yCord === 0) {
-        if (arr[yCord + 1][xCord - 1] === "O") return false;
+        if (arr[yCord + 1][xCord - 1]) return false;
       } else if (yCord === gridSize - 1) {
-        if (arr[yCord - 1][xCord - 1] === "O") return false;
+        if (arr[yCord - 1][xCord - 1]) return false;
       } else {
-        if (arr[yCord + 1][xCord - 1] === "O") return false;
-        if (arr[yCord - 1][xCord - 1] === "O") return false;
+        if (arr[yCord + 1][xCord - 1]) return false;
+        if (arr[yCord - 1][xCord - 1]) return false;
       }
     }
 
     for (let x = xCord; x < xCord + ship.length; x++) {
-      if (arr[yCord][x] === "O") return false;
+      if (arr[yCord][x]) return false;
 
       if (yCord === 0) {
-        if (arr[yCord + 1][x] === "O") return false;
+        if (arr[yCord + 1][x]) return false;
       } else if (yCord === gridSize - 1) {
-        if (arr[yCord - 1][x] === "O") return false;
-      } else if (arr[yCord - 1][x] === "O" || arr[yCord + 1][x] === "O")
-        return false;
+        if (arr[yCord - 1][x]) return false;
+      } else if (arr[yCord - 1][x] || arr[yCord + 1][x]) return false;
     }
 
     if (xCord + ship.length <= gridSize) {
-      if (arr[yCord][xCord + ship.length] === "O") return false;
+      if (arr[yCord][xCord + ship.length]) return false;
       if (yCord === 0) {
-        if (arr[yCord + 1][xCord + ship.length] === "O") return false;
+        if (arr[yCord + 1][xCord + ship.length]) return false;
       } else if (yCord === gridSize - 1) {
-        if (arr[yCord - 1][xCord + ship.length] === "O") return false;
+        if (arr[yCord - 1][xCord + ship.length]) return false;
       } else {
-        if (arr[yCord + 1][xCord + ship.length] === "O") return false;
-        if (arr[yCord - 1][xCord + ship.length] === "O") return false;
+        if (arr[yCord + 1][xCord + ship.length]) return false;
+        if (arr[yCord - 1][xCord + ship.length]) return false;
       }
     }
 
@@ -190,5 +197,6 @@ export function Gameboard() {
     placeVertically,
     checkVertically,
     placeShipsRandomly,
+    receiveAttack,
   };
 }
