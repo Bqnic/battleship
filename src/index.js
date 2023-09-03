@@ -1,8 +1,7 @@
 import "./style.css";
-import { Gameboard } from "./game";
+import { gameboard } from "./constants";
 import { createGameboard, populateGameboard } from "./ui";
 
-let gameboard = Gameboard();
 gameboard.placeShipsRandomly();
 
 createGameboard();

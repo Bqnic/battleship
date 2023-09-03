@@ -1,6 +1,9 @@
 :root {
   --bg-color: #94a3b8;
   --ship-bg: #475569;
+  --hover-color: #38bdf8;
+  --miss-color: #075985;
+  --hit-color: #dc2626;
 }
 
 * {
@@ -43,4 +46,18 @@ body {
 }
 .square.ship {
   background-color: var(--ship-bg);
+}
+.square:hover {
+  background-color: var(--hover-color);
+}
+.square.hit {
+  background-color: var(--miss-color);
+  pointer-events: none;
+}
+.square.ship.hit {
+  background-color: var(--hit-color);
+  pointer-events: none;
+}
+.gameboard.unclickable {
+  pointer-events: none;
 }

@@ -2,6 +2,8 @@ import { gridSize } from "./constants";
 export function Ship(length, hits = 0) {
   if (length > 5 || length < 1) throw new Error("Invalid size");
 
+  let gridPlacement;
+
   function hit() {
     hits += 1;
   }
@@ -14,17 +16,31 @@ export function Ship(length, hits = 0) {
     return length === hits;
   }
 
-  return { length, getHits, hit, isSunk };
+  function getGridPlacement() {
+    return gridPlacement;
+  }
+
+  function setGridPlacement(arr) {
+    gridPlacement = arr;
+  }
+
+  return { length, getHits, hit, isSunk, getGridPlacement, setGridPlacement };
 }
 
 export function Gameboard() {
   let arr = [];
+  let drowned = 0;
 
   for (let i = 0; i < gridSize; i++) {
     arr[i] = [];
     for (let j = 0; j < gridSize; j++) {
       arr[i][j] = null;
     }
+  }
+
+  function checkWinCondition() {
+    // there are 17 ship squares, if all of them are drowned then the game is over
+    return drowned === 17;
   }
 
   function receiveAttack(pos) {
@@ -34,9 +50,10 @@ export function Gameboard() {
     if (arr[yCord][xCord]) {
       let ship = arr[yCord][xCord];
       ship.hit();
-      return true;
+      drowned++;
+      return ship;
     }
-    return false;
+    return "miss";
   }
 
   function placeShipsRandomly() {
@@ -72,10 +89,14 @@ export function Gameboard() {
     if (checkHorizontally(ship, pos) === true) {
       let xCord = pos[0];
       let yCord = pos[1];
+      let gridPlacement = [];
 
       for (let x = xCord; x < xCord + ship.length; x++) {
         arr[yCord][x] = ship;
+        gridPlacement.push([yCord, x]);
       }
+
+      ship.setGridPlacement(gridPlacement);
       return true;
     }
     return false;
@@ -86,8 +107,14 @@ export function Gameboard() {
     if (checkVertically(ship, pos) === true) {
       let xCord = pos[0];
       let yCord = pos[1];
+      let gridPlacement = [];
 
-      for (let y = yCord; y > yCord - ship.length; y--) arr[y][xCord] = ship;
+      for (let y = yCord; y > yCord - ship.length; y--) {
+        arr[y][xCord] = ship;
+        gridPlacement.push([y, xCord]);
+      }
+
+      ship.setGridPlacement(gridPlacement);
       return true;
     }
     return false;
@@ -175,7 +202,7 @@ export function Gameboard() {
       } else if (arr[yCord - 1][x] || arr[yCord + 1][x]) return false;
     }
 
-    if (xCord + ship.length <= gridSize) {
+    if (xCord + ship.length < gridSize) {
       if (arr[yCord][xCord + ship.length]) return false;
       if (yCord === 0) {
         if (arr[yCord + 1][xCord + ship.length]) return false;
@@ -198,5 +225,6 @@ export function Gameboard() {
     checkVertically,
     placeShipsRandomly,
     receiveAttack,
+    checkWinCondition,
   };
 }
