@@ -1,4 +1,4 @@
-import { gridSize } from "./constants";
+import { ai, gridSize } from "./constants";
 import { aiGameboard } from "./constants";
 
 export function createGameboards() {
@@ -47,23 +47,35 @@ function addListener(square) {
     if (aiGameboard.checkWinCondition()) {
       document.getElementById("ai").classList.add("unclickable");
     }
+
+    ai.makeAttack();
   });
 }
 
 function makeAttack(pos) {
   let attack = aiGameboard.receiveAttack(pos);
   if (attack !== "miss" && attack.isSunk()) {
-    colorAdjacentSquares(attack);
+    colorAdjacentSquares(attack, true);
   }
 }
 
-function colorAdjacentSquares(ship) {
+export function colorAdjacentSquares(ship, playersAttack) {
   let adjacentSquares = ship.getAdjacentSquares();
+  let possibleMoves = ai.getPossibleMoves();
 
   for (let i = 0; i < adjacentSquares.length; i++) {
     let xCord = adjacentSquares[i][0];
     let yCord = adjacentSquares[i][1];
 
-    document.getElementById(`${xCord},${yCord}`).classList.add("hit");
+    if (playersAttack)
+      document.getElementById(`${xCord},${yCord}`).classList.add("hit");
+    else {
+      document.getElementById(`${xCord}${yCord}`).classList.add("hit");
+
+      let index = possibleMoves.findIndex(
+        (move) => move[0] === xCord && move[1] === yCord
+      );
+      if (index !== -1) possibleMoves.splice(index, 1);
+    }
   }
 }

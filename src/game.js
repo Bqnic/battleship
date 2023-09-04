@@ -112,7 +112,7 @@ export function Gameboard() {
 
       for (let x = xCord; x < xCord + ship.length; x++) {
         arr[yCord][x] = ship;
-        gridPlacement.push([yCord, x]);
+        gridPlacement.push([x, yCord]);
       }
 
       ship.setGridPlacement(gridPlacement);
@@ -130,7 +130,7 @@ export function Gameboard() {
 
       for (let y = yCord; y > yCord - ship.length; y--) {
         arr[y][xCord] = ship;
-        gridPlacement.push([y, xCord]);
+        gridPlacement.push([xCord, y]);
       }
 
       ship.setGridPlacement(gridPlacement);
