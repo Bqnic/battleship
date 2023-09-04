@@ -1,4 +1,5 @@
 import { Gameboard } from "./game";
 
 export const gridSize = 10;
-export const gameboard = Gameboard();
+export const aiGameboard = Gameboard();
+export const playerGameboard = Gameboard();

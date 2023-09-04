@@ -1,4 +1,5 @@
 import { gridSize } from "./constants";
+
 export function Ship(length, hits = 0) {
   if (length > 5 || length < 1) throw new Error("Invalid size");
 

@@ -25,7 +25,7 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  gap: 100px;
   justify-content: center;
   align-items: center;
 }
@@ -44,17 +44,21 @@ body {
   justify-content: center;
   align-items: center;
 }
-.square.ship {
+#player .square.ship {
   background-color: var(--ship-bg);
 }
-.square:hover {
+#ai .square.ship {
+  background-color: var(--bg-color);
+}
+#ai .square:hover {
   background-color: var(--hover-color);
 }
 .square.hit {
   background-color: var(--miss-color);
   pointer-events: none;
 }
-.square.ship.hit {
+#ai .square.ship.hit,
+#player .square.ship.hit {
   background-color: var(--hit-color);
   pointer-events: none;
 }

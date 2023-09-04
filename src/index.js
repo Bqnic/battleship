@@ -1,8 +1,10 @@
 import "./style.css";
-import { gameboard } from "./constants";
-import { createGameboard, populateGameboard } from "./ui";
+import { aiGameboard, playerGameboard } from "./constants";
+import { createGameboards, populateGameboard } from "./ui";
 
-gameboard.placeShipsRandomly();
+aiGameboard.placeShipsRandomly();
+playerGameboard.placeShipsRandomly();
 
-createGameboard();
-populateGameboard(gameboard.arr);
+createGameboards();
+populateGameboard(playerGameboard.arr, true);
+populateGameboard(aiGameboard.arr, false);

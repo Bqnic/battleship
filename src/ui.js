@@ -1,25 +1,35 @@
 import { gridSize } from "./constants";
-import { gameboard } from "./constants";
+import { aiGameboard } from "./constants";
 
-export function createGameboard() {
-  const gameboard = document.querySelector(".gameboard");
+export function createGameboards() {
+  const aiGameboard = document.getElementById("ai");
+  const playerGameboard = document.getElementById("player");
+
   for (let y = gridSize - 1; y >= 0; y--) {
     for (let x = 0; x < gridSize; x++) {
-      const square = document.createElement("div");
-      square.classList.add("square");
-      square.id = `${x},${y}`;
-      addListener(square);
+      const aiSquare = document.createElement("div");
+      aiSquare.classList.add("square");
+      aiSquare.id = `${x},${y}`;
+      addListener(aiSquare);
 
-      gameboard.appendChild(square);
+      aiGameboard.appendChild(aiSquare);
+
+      const playerSquare = document.createElement("div");
+      playerSquare.classList.add("square");
+      playerSquare.id = `${x}${y}`;
+
+      playerGameboard.appendChild(playerSquare);
     }
   }
 }
 
-export function populateGameboard(arr) {
+export function populateGameboard(arr, player) {
   for (let y = gridSize - 1; y >= 0; y--) {
     for (let x = 0; x < gridSize; x++) {
       if (arr[y][x]) {
-        const shipSquare = document.getElementById(`${x},${y}`);
+        let shipSquare;
+        if (player === true) shipSquare = document.getElementById(`${x}${y}`);
+        else shipSquare = document.getElementById(`${x},${y}`);
         shipSquare.classList.add("ship");
       }
     }
@@ -34,14 +44,14 @@ function addListener(square) {
     makeAttack(pos);
     square.classList.add("hit");
 
-    if (gameboard.checkWinCondition()) {
-      document.querySelector(".gameboard").classList.add("unclickable");
+    if (aiGameboard.checkWinCondition()) {
+      document.getElementById("ai").classList.add("unclickable");
     }
   });
 }
 
 function makeAttack(pos) {
-  let attack = gameboard.receiveAttack(pos);
+  let attack = aiGameboard.receiveAttack(pos);
   if (attack !== "miss" && attack.isSunk()) {
     colorAdjacentSquares(attack);
   }

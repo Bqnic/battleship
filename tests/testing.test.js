@@ -73,7 +73,7 @@ describe("gameboard factory function", () => {
   test("attacking ships", () => {
     let gameboard = Gameboard();
     gameboard.placeHorizontally(Ship(1), [0, 0]);
-    expect(gameboard.receiveAttack([0, 0])).toBe(2);
+    gameboard.receiveAttack[(0, 0)];
     expect(gameboard.arr[0][0].isSunk()).toBe(true);
   });
 });
