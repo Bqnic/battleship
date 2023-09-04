@@ -3,6 +3,7 @@ export function Ship(length, hits = 0) {
   if (length > 5 || length < 1) throw new Error("Invalid size");
 
   let gridPlacement;
+  let adjacentSquares;
 
   function hit() {
     hits += 1;
@@ -20,11 +21,28 @@ export function Ship(length, hits = 0) {
     return gridPlacement;
   }
 
+  function getAdjacentSquares() {
+    return adjacentSquares;
+  }
+
   function setGridPlacement(arr) {
     gridPlacement = arr;
   }
 
-  return { length, getHits, hit, isSunk, getGridPlacement, setGridPlacement };
+  function setAdjacentSquares(arr) {
+    adjacentSquares = arr;
+  }
+
+  return {
+    length,
+    getHits,
+    hit,
+    isSunk,
+    getGridPlacement,
+    setGridPlacement,
+    getAdjacentSquares,
+    setAdjacentSquares,
+  };
 }
 
 export function Gameboard() {
@@ -132,39 +150,60 @@ export function Gameboard() {
     )
       return false;
 
+    let adjacentSquares = [];
+
     if (yCord !== gridSize - 1) {
       if (arr[yCord + 1][xCord]) return false;
+      adjacentSquares.push([xCord, yCord + 1]);
       if (xCord === 0) {
         if (arr[yCord + 1][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, yCord + 1]);
       } else if (xCord === gridSize - 1) {
         if (arr[yCord + 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord + 1]);
       } else {
         if (arr[yCord + 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord + 1]);
         if (arr[yCord + 1][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, yCord + 1]);
       }
     }
 
     for (let y = yCord; y > yCord - ship.length; y--) {
       if (arr[y][xCord]) return false;
+
       if (xCord === 0) {
         if (arr[y][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, y]);
       } else if (xCord === gridSize - 1) {
         if (arr[y][xCord - 1]) return false;
-      } else if (arr[y][xCord - 1] || arr[y][xCord + 1]) return false;
+        adjacentSquares.push([xCord - 1, y]);
+      } else {
+        if (arr[y][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, y]);
+        if (arr[y][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, y]);
+      }
     }
 
     if (yCord - ship.length + 1 > 0) {
       if (arr[yCord - ship.length][xCord]) return false;
+      adjacentSquares.push([xCord, yCord - ship.length]);
       if (xCord === 0) {
         if (arr[yCord - ship.length][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, yCord - ship.length]);
       } else if (xCord === gridSize - 1) {
         if (arr[yCord - ship.length][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord - ship.length]);
       } else {
         if (arr[yCord - ship.length][xCord + 1]) return false;
+        adjacentSquares.push([xCord + 1, yCord - ship.length]);
         if (arr[yCord - ship.length][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord - ship.length]);
       }
     }
 
+    ship.setAdjacentSquares(adjacentSquares);
     return true;
   }
 
@@ -180,15 +219,22 @@ export function Gameboard() {
     )
       return false;
 
+    let adjacentSquares = [];
+
     if (xCord !== 0) {
       if (arr[yCord][xCord - 1]) return false;
+      adjacentSquares.push([xCord - 1, yCord]);
       if (yCord === 0) {
         if (arr[yCord + 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord + 1]);
       } else if (yCord === gridSize - 1) {
         if (arr[yCord - 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord - 1]);
       } else {
         if (arr[yCord + 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord + 1]);
         if (arr[yCord - 1][xCord - 1]) return false;
+        adjacentSquares.push([xCord - 1, yCord - 1]);
       }
     }
 
@@ -197,23 +243,36 @@ export function Gameboard() {
 
       if (yCord === 0) {
         if (arr[yCord + 1][x]) return false;
+        adjacentSquares.push([x, yCord + 1]);
       } else if (yCord === gridSize - 1) {
         if (arr[yCord - 1][x]) return false;
-      } else if (arr[yCord - 1][x] || arr[yCord + 1][x]) return false;
+        adjacentSquares.push([x, yCord - 1]);
+      } else {
+        if (arr[yCord + 1][x]) return false;
+        adjacentSquares.push([x, yCord + 1]);
+        if (arr[yCord - 1][x]) return false;
+        adjacentSquares.push([x, yCord - 1]);
+      }
     }
 
     if (xCord + ship.length < gridSize) {
       if (arr[yCord][xCord + ship.length]) return false;
+      adjacentSquares.push([xCord + ship.length, yCord]);
       if (yCord === 0) {
         if (arr[yCord + 1][xCord + ship.length]) return false;
+        adjacentSquares.push([xCord + ship.length, yCord + 1]);
       } else if (yCord === gridSize - 1) {
         if (arr[yCord - 1][xCord + ship.length]) return false;
+        adjacentSquares.push([xCord + ship.length, yCord - 1]);
       } else {
         if (arr[yCord + 1][xCord + ship.length]) return false;
+        adjacentSquares.push([xCord + ship.length, yCord + 1]);
         if (arr[yCord - 1][xCord + ship.length]) return false;
+        adjacentSquares.push([xCord + ship.length, yCord - 1]);
       }
     }
 
+    ship.setAdjacentSquares(adjacentSquares);
     return true;
   }
 
