@@ -79,3 +79,7 @@ export function colorAdjacentSquares(ship, playersAttack) {
     }
   }
 }
+
+export function updatePlayerGameboard(pos) {
+  document.getElementById(`${pos[0]}${pos[1]}`).classList.add("hit");
+}

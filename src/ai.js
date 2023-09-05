@@ -1,5 +1,5 @@
 import { gridSize, playerGameboard } from "./constants";
-import { colorAdjacentSquares } from "./ui";
+import { colorAdjacentSquares, updatePlayerGameboard } from "./ui";
 
 export function AI() {
   let possibleMoves = [];
@@ -22,6 +22,8 @@ export function AI() {
   function makeAttack() {
     if (educatedMoves.length === 0) makeRandomAttack();
     else makeEducatedAttack();
+    if (playerGameboard.checkWinCondition())
+      document.getElementById("ai").classList.add("unclickable");
   }
 
   function makeEducatedAttack() {
@@ -31,7 +33,8 @@ export function AI() {
         possibleMoves.find((arr) => arr[0] === move[0] && arr[1] === move[1])
       ) {
         let attack = playerGameboard.receiveAttack(move);
-        document.getElementById(`${move[0]}${move[1]}`).classList.add("hit");
+
+        updatePlayerGameboard(move);
 
         if (attack !== "miss") {
           if (attack.isSunk()) {
@@ -61,11 +64,7 @@ export function AI() {
     const moveIndex = Math.floor(Math.random() * possibleMoves.length);
     let attack = playerGameboard.receiveAttack(possibleMoves[moveIndex]);
 
-    document
-      .getElementById(
-        `${possibleMoves[moveIndex][0]}${possibleMoves[moveIndex][1]}`
-      )
-      .classList.add("hit");
+    updatePlayerGameboard(possibleMoves[moveIndex]);
 
     if (attack !== "miss") {
       if (attack.isSunk()) colorAdjacentSquares(attack, false);
