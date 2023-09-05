@@ -1,5 +1,5 @@
 import { gridSize, playerGameboard } from "./constants";
-import { colorAdjacentSquares, updatePlayerGameboard } from "./ui";
+import { aiWon, colorAdjacentSquares, updatePlayerGameboard } from "./ui";
 
 export function AI() {
   let possibleMoves = [];
@@ -19,11 +19,20 @@ export function AI() {
     possibleMoves = arr;
   }
 
+  function resetPossibleMoves() {
+    possibleMoves = [];
+    educatedMoves = [];
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        possibleMoves.push([x, y]);
+      }
+    }
+  }
+
   function makeAttack() {
     if (educatedMoves.length === 0) makeRandomAttack();
     else makeEducatedAttack();
-    if (playerGameboard.checkWinCondition())
-      document.getElementById("ai").classList.add("unclickable");
+    if (playerGameboard.checkWinCondition()) aiWon();
   }
 
   function makeEducatedAttack() {
@@ -119,5 +128,5 @@ export function AI() {
     }
   }
 
-  return { makeAttack, getPossibleMoves, setPossibleMoves };
+  return { makeAttack, getPossibleMoves, setPossibleMoves, resetPossibleMoves };
 }

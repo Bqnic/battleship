@@ -1,5 +1,6 @@
 import { ai, gridSize } from "./constants";
 import { aiGameboard } from "./constants";
+import { setupGame } from "./setup";
 
 export function createGameboards() {
   const aiGameboard = document.getElementById("ai");
@@ -44,9 +45,7 @@ function addListener(square) {
     makeAttack(pos);
     square.classList.add("hit");
 
-    if (aiGameboard.checkWinCondition()) {
-      document.getElementById("ai").classList.add("unclickable");
-    }
+    if (aiGameboard.checkWinCondition()) playerWon();
 
     ai.makeAttack();
   });
@@ -82,4 +81,46 @@ export function colorAdjacentSquares(ship, playersAttack) {
 
 export function updatePlayerGameboard(pos) {
   document.getElementById(`${pos[0]}${pos[1]}`).classList.add("hit");
+}
+
+function playerWon() {
+  document.getElementById("ai").classList.add("unclickable");
+
+  const popup = document.querySelector(".popup");
+  popup.appendChild(document.createElement("p")).textContent = "YOU WON!";
+  const button = document.createElement("button");
+  button.textContent = "Play again";
+  button.classList.add("btn");
+  popup.appendChild(button);
+
+  button.addEventListener("click", () => {
+    popup.classList.remove("active");
+    popup.classList.remove("won");
+    while (popup.firstChild) popup.removeChild(popup.firstChild);
+    setupGame();
+  });
+
+  popup.classList.add("active");
+  popup.classList.add("won");
+}
+
+export function aiWon() {
+  document.getElementById("ai").classList.add("unclickable");
+
+  const popup = document.querySelector(".popup");
+  popup.appendChild(document.createElement("p")).textContent = "YOU LOST!";
+  const button = document.createElement("button");
+  button.textContent = "Play again";
+  button.classList.add("btn");
+  popup.appendChild(button);
+
+  button.addEventListener("click", () => {
+    popup.classList.remove("active");
+    popup.classList.remove("lost");
+    while (popup.firstChild) popup.removeChild(popup.firstChild);
+    setupGame();
+  });
+
+  popup.classList.add("active");
+  popup.classList.add("lost");
 }

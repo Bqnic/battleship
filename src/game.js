@@ -62,6 +62,21 @@ export function Gameboard() {
     return drowned === 17;
   }
 
+  function cleanGameboard() {
+    arr = [];
+    drowned = 0;
+    for (let i = 0; i < gridSize; i++) {
+      arr[i] = [];
+      for (let j = 0; j < gridSize; j++) {
+        arr[i][j] = null;
+      }
+    }
+  }
+
+  function getGameboardArr() {
+    return arr;
+  }
+
   function receiveAttack(pos) {
     let xCord = pos[0];
     let yCord = pos[1];
@@ -286,5 +301,7 @@ export function Gameboard() {
     placeShipsRandomly,
     receiveAttack,
     checkWinCondition,
+    cleanGameboard,
+    getGameboardArr,
   };
 }
