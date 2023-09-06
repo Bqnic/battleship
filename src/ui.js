@@ -2,9 +2,8 @@ import { ai, gridSize } from "./constants";
 import { aiGameboard } from "./constants";
 import { setupGame } from "./setup";
 
-export function createGameboards() {
+export function createAiGameboard() {
   const aiGameboard = document.getElementById("ai");
-  const playerGameboard = document.getElementById("player");
 
   for (let y = gridSize - 1; y >= 0; y--) {
     for (let x = 0; x < gridSize; x++) {
@@ -14,7 +13,15 @@ export function createGameboards() {
       addListener(aiSquare);
 
       aiGameboard.appendChild(aiSquare);
+    }
+  }
+}
 
+export function createPlayerGameboard() {
+  const playerGameboard = document.getElementById("player");
+
+  for (let y = gridSize - 1; y >= 0; y--) {
+    for (let x = 0; x < gridSize; x++) {
       const playerSquare = document.createElement("div");
       playerSquare.classList.add("square");
       playerSquare.id = `${x}${y}`;
