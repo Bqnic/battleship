@@ -15,6 +15,8 @@ export function createAiGameboard() {
       aiGameboard.appendChild(aiSquare);
     }
   }
+
+  aiGameboard.classList.add("active");
 }
 
 export function createPlayerGameboard() {
@@ -29,6 +31,8 @@ export function createPlayerGameboard() {
       playerGameboard.appendChild(playerSquare);
     }
   }
+
+  playerGameboard.classList.add("active");
 }
 
 export function populateGameboard(arr, player) {
@@ -53,8 +57,7 @@ function addListener(square) {
     square.classList.add("hit");
 
     if (aiGameboard.checkWinCondition()) playerWon();
-
-    ai.makeAttack();
+    else ai.makeAttack();
   });
 }
 

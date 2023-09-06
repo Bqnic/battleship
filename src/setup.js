@@ -18,6 +18,9 @@ export function setupGame() {
 
   uiAiBoard.classList.remove("unclickable");
 
+  uiPlayerBoard.classList.remove("active");
+  uiAiBoard.classList.remove("active");
+
   while (uiPlayerBoard.firstChild)
     uiPlayerBoard.removeChild(uiPlayerBoard.firstChild);
   while (uiAiBoard.firstChild) uiAiBoard.removeChild(uiAiBoard.firstChild);

@@ -19,16 +19,47 @@ html {
 }
 body {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 600;
+  color: white;
+  padding-top: 50px;
 }
 .container {
   width: 100vw;
   height: 100vh;
   display: flex;
-  gap: 100px;
+  gap: 140px;
   justify-content: center;
   align-items: center;
+  margin-top: -50px;
+  margin-left: -50px;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  font-size: 1.2rem;
+  margin-top: auto;
+}
+a {
+  text-decoration: none;
+  color: white;
+  transition: 0.4s;
+}
+a:hover {
+  font-size: 1.4rem;
+  transition: 0.4s;
 }
 .popup {
   display: flex;
@@ -133,6 +164,12 @@ body {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
 }
+#ai.active {
+  border: 3px solid red;
+}
+#player.active {
+  border: 3px solid green;
+}
 .square {
   height: 50px;
   width: 50px;
@@ -162,4 +199,171 @@ body {
 }
 .gameboard.unclickable {
   pointer-events: none;
+}
+
+@media screen and (min-width: 300px) {
+  .header {
+    font-size: 1.5rem;
+    padding-top: 20px;
+  }
+  .square {
+    height: 33px;
+    width: 33px;
+  }
+  .container {
+    gap: 20px;
+    flex-direction: column;
+    margin-left: 0px;
+  }
+  .placementBtn {
+    width: 80px;
+    height: 30px;
+    padding: 6px;
+    font-size: 0.6em;
+  }
+  .placementBtn:hover {
+    height: 40px;
+  }
+  .placementBtn.clicked {
+    height: 40px;
+  }
+  .randomizerBtn {
+    width: 100px;
+    height: 50px;
+    padding: 6px;
+    font-size: 0.6rem;
+  }
+  .randomizerBtn:hover {
+    width: 120px;
+    height: 60px;
+  }
+  .popup {
+    height: 180px;
+    width: 250px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .header {
+    font-size: 1.8rem;
+    padding-top: 20px;
+  }
+  .square {
+    height: 36px;
+    width: 36px;
+  }
+  .container {
+    gap: 20px;
+    flex-direction: column;
+    margin-left: 0px;
+  }
+  .placementBtn {
+    width: 100px;
+    height: 40px;
+    padding: 6px;
+    font-size: 0.8em;
+  }
+  .placementBtn:hover {
+    height: 50px;
+  }
+  .placementBtn.clicked {
+    height: 50px;
+  }
+  .randomizerBtn {
+    width: 140px;
+    height: 50px;
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  .randomizerBtn:hover {
+    width: 180px;
+    height: 60px;
+  }
+  .popup {
+    height: 200px;
+    width: 280px;
+  }
+}
+@media screen and (min-width: 900px) {
+  .header {
+    font-size: 2.4rem;
+    padding-top: 20px;
+  }
+  .square {
+    height: 40px;
+    width: 40px;
+  }
+  .container {
+    gap: 20px;
+    flex-direction: row;
+    margin-left: 0px;
+  }
+  .placementBtn {
+    width: 120px;
+    height: 60px;
+    padding: 10px;
+    font-size: 1.2rm;
+  }
+  .placementBtn:hover {
+    height: 80px;
+  }
+  .placementBtn.clicked {
+    height: 80px;
+  }
+  .randomizerBtn {
+    width: 200px;
+    height: 60px;
+    padding: 6px;
+    font-size: 1rem;
+  }
+  .randomizerBtn:hover {
+    width: 240px;
+    height: 70px;
+  }
+  .popup {
+    height: 220px;
+    width: 300px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .header {
+    font-size: 3rem;
+    padding-top: 40px;
+  }
+  .square {
+    height: 50px;
+    width: 50px;
+  }
+  .container {
+    gap: 60px;
+    flex-direction: row;
+    margin-left: 0px;
+  }
+  .placementBtn {
+    width: 120px;
+    height: 60px;
+    border-radius: 20px;
+    padding: 12px;
+    font-size: 1rem;
+  }
+  .placementBtn:hover {
+    height: 80px;
+  }
+  .placementBtn.clicked {
+    height: 75px;
+  }
+  .randomizerBtn {
+    width: 300px;
+    height: 50px;
+    padding: 12px;
+    font-size: 1rem;
+  }
+  .randomizerBtn:hover {
+    width: 340px;
+    height: 60px;
+  }
+  .popup {
+    height: 250px;
+    width: 350px;
+  }
 }
