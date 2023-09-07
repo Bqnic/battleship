@@ -80,6 +80,8 @@ function createButtons() {
 
   addListenersToButtons(horizontalBtn, verticalBtn, randomizerBtn);
 
+  btnDiv.appendChild(document.createElement("p")).textContent =
+    "Place your ships";
   btnDiv.appendChild(horizontalBtn);
   btnDiv.appendChild(verticalBtn);
   btnDiv.appendChild(randomizerBtn);
